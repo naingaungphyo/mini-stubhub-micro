@@ -1,1 +1,1 @@
-# Stubhub like app Monorepo
+# Stubhub like mini app
