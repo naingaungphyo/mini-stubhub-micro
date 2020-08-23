@@ -1,0 +1,25 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  # dont push to dockerhub, prevent default behavior
+  #local:
+  #  push: false
+  googleCloudBuild:
+    projectId: mini-stubhub-micro
+  artifacts:
+    # for dockerHub
+    # - image: naingaungphyo/auth
+    - image: us.gcr.io/mini-stubhub-micro/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            # where to sync this file to inside of running container
+            # . means throw it to the corresponding path inside the container
+            dest: .
