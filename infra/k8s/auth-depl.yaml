@@ -17,6 +17,12 @@ spec:
         - name: auth
           #  image: us.gcr.io/mini-stubhub-micro/auth
           image: naingaungphyo/auth
+          env:
+            - name: JWT_KEY # name inside container
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret # name of secret
+                  key: JWT_KEY # key used when creating secret
 ---
 apiVersion: v1
 # creating clusterIP service as default
