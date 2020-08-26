@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        # name used for logging
+        - name: client
+          #  image: us.gcr.io/mini-stubhub-micro/auth
+          image: naingaungphyo/client
+---
+apiVersion: v1
+# creating clusterIP service as default
+kind: Service
+metadata:
+  name: client-srv
+spec:
+  selector: # find matchLabels of pod
+    app: client
+  ports:
+    - name: client # for logging
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

@@ -9,8 +9,12 @@ spec:
   rules:
     - host: ticketing.dev
       http:
-        paths:
+        paths: # order matter
           - path: /api/users/?(.*)
             backend:
               serviceName: auth-srv
+              servicePort: 3000
+          - path: /?(.*)
+            backend:
+              serviceName: client-srv
               servicePort: 3000

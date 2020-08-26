@@ -23,3 +23,13 @@ build:
             # where to sync this file to inside of running container
             # . means throw it to the corresponding path inside the container
             dest: .
+    - image: naingaungphyo/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '**/*.js'
+            # where to sync this file to inside of running container
+            # . means throw it to the corresponding path inside the container
+            dest: .
