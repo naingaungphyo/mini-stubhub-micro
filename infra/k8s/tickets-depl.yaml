@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-depl
+  name: tickets-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth
+      app: tickets
   template:
     metadata:
       labels:
-        app: auth
+        app: tickets
     spec:
       containers:
         # name used for logging
-        - name: auth
-          #  image: us.gcr.io/mini-stubhub-micro/auth
-          image: naingaungphyo/auth
+        - name: tickets
+          #  image: us.gcr.io/mini-stubhub-micro/tickets
+          image: naingaungphyo/tickets
           env:
             - name: MONGO_URI
-              value: 'mongodb://auth-mongo-srv:27017/auth'
+              value: 'mongodb://tickets-mongo-srv:27017/tickets' #tickets is databasename
             - name: JWT_KEY # name inside container
               valueFrom:
                 secretKeyRef:
@@ -30,12 +30,12 @@ apiVersion: v1
 # creating clusterIP service as default
 kind: Service
 metadata:
-  name: auth-srv
+  name: tickets-srv
 spec:
   selector:
-    app: auth
+    app: tickets
   ports:
-    - name: auth
+    - name: tickets
       protocol: TCP
       port: 3000
       targetPort: 3000
