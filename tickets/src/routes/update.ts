@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express'
 import { body } from 'express-validator'
 import { requireAuth, validateRequest, NotFoundError, NotAuthorizedError } from '@napjs/common'
 import { Ticket } from '../models/ticket'
+import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher'
+import { natsWrapper } from '../nats-wrapper'
 
 const router = express.Router()
 
@@ -30,6 +32,14 @@ router.put(
     })
 
     await ticket.save() // after save(), mongoose updates `ticket` document too; ie: ticket is always latest version after save()
+
+    new TicketUpdatedPublisher(natsWrapper.client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId
+    })
+
     res.send(ticket)
   }
 )
