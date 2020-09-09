@@ -19,9 +19,11 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
 
     // Mark the ticket as being reserved by setting its orderId property
     ticket.set({ orderId: data.id })
+    // Save the ticket
+    await ticket.save()
 
     // after order is created, ticket service updates orderId in ticker doc and then publish updated Ticket info(version) event again
-    new TicketUpdatedPublisher(this.client).publish({
+    await new TicketUpdatedPublisher(this.client).publish({
       id: ticket.id,
       price: ticket.price,
       title: ticket.title,
@@ -29,9 +31,6 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
       orderId: ticket.orderId,
       version: ticket.version
     })
-
-    // Save the ticket
-    await ticket.save()
 
     // ack the message
     msg.ack()

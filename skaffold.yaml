@@ -53,3 +53,13 @@ build:
             # where to sync this file to inside of running container
             # . means throw it to the corresponding path inside the container
             dest: .
+    - image: naingaungphyo/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            # where to sync this file to inside of running container
+            # . means throw it to the corresponding path inside the container
+            dest: .
