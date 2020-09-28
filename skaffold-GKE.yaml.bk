@@ -6,7 +6,7 @@ deploy:
       - ./infra/k8s/*
 build:
   # dont push to dockerhub, prevent default behavior
-  #local:
+  # local:
   #  push: false
   googleCloudBuild:
     projectId: mini-stubhub-micro
